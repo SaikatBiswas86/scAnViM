@@ -105,7 +105,7 @@ def upload_page():
     # Generate a unique user ID if not already generated
     generate_user_id()
 
-    return render_template('uplode_file1_gene.html')
+    return render_template('index.html')
 
 
 @app.route('/process_upload', methods=['POST'])
@@ -1923,7 +1923,7 @@ def chat():
 
 @app.route('/homepage')
 def mainc2_page():
-    return render_template('uplode_file1_gene.html')
+    return render_template('index.html')
 @app.route('/help_page')
 def help_page():
     return render_template('help_info.html')
@@ -1937,7 +1937,7 @@ def analysis_page():
 
 @app.route('/chatbot_page')
 def chatbot_page():
-    return render_template('uplode_file1_gene.html')
+    return render_template('index.html')
 
 
 if __name__ == '__main__':
