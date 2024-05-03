@@ -1,0 +1,296 @@
+<!-- templates/preprocess_raw.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supervised Learning Analysis</title>
+
+    <!-- Bootstrap CSS (add this link) -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+
+    <style>
+        body {
+            background-color: #f8f9fa; /* Set a light background color */
+        }
+
+        .header {
+            background-color: #343a40; /* Set header background color */
+            color: #ffffff; /* Set text color */
+            padding: 15px;
+        }
+
+        .main-content {
+            margin-top: 20px;
+        }
+
+        .content-section {
+            background-color: #5A6240; /* Set content background color */
+            padding: 8px;
+            margin-bottom: 5px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            line-height: 15px;
+            text-align: center;
+        }
+        .content-section-Filedetails {
+          font-family: 'monaco', monospace;
+        }
+
+        .form-section {
+            background-color: #CED2AA; /* Set form background color */
+            padding: 5px;
+            border-radius: 4px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            font-family: 'luminari', fantasy;
+        }
+
+        .header .btn-group {
+            margin-left: 160px;
+        }
+
+        .header .btn-group {
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .header .btn-group button {
+            margin-left: 10px;
+            background-color: white;
+            padding: 8px 12px;
+            border: 2px solid #A08C3B;
+            border-radius: 5px;
+        }
+        .download-data {
+            height:100 px;
+            margin-top: 7px;
+            background-color: #B5BB7B; /* Set content background color */
+            padding: 8px;
+            margin-bottom: 5px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            line-height: 15px;
+        }
+        .show-analysis {
+            height:100 px;
+            margin-top: 7px;
+            background-color: #6D9781; /* Set content background color */
+            padding: 8px;
+            margin-bottom: 5px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            line-height: 15px;
+            text-align: center;
+        }
+        #footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 5px;
+            width: 100%;
+        }
+
+        .note-up {
+
+            height:30px;
+            padding: 6px;
+            margin: 3px;
+            background-color: #6D9781;
+        }
+        .note-down {
+
+            padding: 6px;
+            margin: 3px;
+            background-color: #6D9781;
+        }
+
+        .middle {
+
+            height:130px;
+            background-color: #6D9781;
+            padding: 6px;
+            margin: 3px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .middle-left, .middle-right {
+            width: 49.5%;
+            padding: 10px;
+            border: 1px solid #333;
+        }
+        .middle-left{
+            background-color: #CED2AA;
+        }
+        .middle-right{
+            background-color: #CED2AA;
+        }
+
+    </style>
+
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <!-- Empty column to push buttons to the right -->
+                </div>
+                <div class="col text-right">
+                    <div class="btn-group">
+                        <button class="btn btn-light" onclick="redirectToMainc2()">Home</button>
+                        <button class="btn btn-light" onclick="redirectToAnalysis()">Analysis</button>
+                        <button class="btn btn-light" onclick="redirectToContact()">Contacts</button>
+                        <button class="btn btn-light" onclick="redirectToHelp()">Help</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container main-content">
+
+        <!-- Supervised Learning Analysis Section -->
+        <div class="content-section">
+            <h3>Supervised Learning Analysis</h3>
+        </div>
+
+        <!-- File Name and Task Serial Section -->
+        <div class="content-section-Filedetails">
+            <p>File Uploaded: {{ file_name }}</p>
+            <p>Task Serial: {{ task_serial }}</p>
+
+            {% if task_serial %}
+                <p><b>Tasks Applied:</b></p>
+                <ul>
+                    {% for task in tasks %}
+                        <li>{{ task }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+
+        <!-- # ADD Note Div Here-->
+        <div class="note-up"><p><b>Note:</b></p> </div>
+        <div class="middle">
+            <div class="middle-left"><p>Note 1: <br>For the single cell gene expression data, the class label represent different cell. And gene expressions are features.</p></div>
+            <div class="middle-right"><p> Note 2:<br> In dataset, make sure the last feature column contain labeled/Output feature.</p></div>
+        </div>
+        <div class="note-down"><p>If your Dataset is not preprocessed, or if not followed notes formate then please go <b>Home => Apply Preprocessing on raw/unprocessed data</b> option. <br>
+            <b><u><span onclick="redirectToMainc2()" style="cursor: pointer;">Or Click Here</span></u></b></p>
+        </div>
+         <br>
+
+
+        <!-- Form Section -->
+        <div class="form-section">
+            <form action="/supervised_work" method="POST">
+                <input type="hidden" name="file_name" value="{{ file_name }}">
+                {% if task_serial %}
+                    <input type="hidden" name="task_serial" value="{{ task_serial }}">
+                {% endif %}
+                <label><h5><u>Select Any ML Algorithm:</u></h5></label><br>
+                <input type="radio" name="options" value="dt" onclick="showInput('dt')"> Apply Decision Tree Algorithm<br>
+                <input type="radio" name="options" value="svm" onclick="showInput('svm')"> Apply SVM Algorithm<br>
+                <input type="radio" name="options" value="rf" onclick="showInput('rf')"> Apply Random Forest Algorithm<br>
+
+                <div id="inputContainer">
+                <!-- This container will dynamically hold the specific input elements based on the selected option -->
+                </div>
+                <br>
+
+                <input type="submit" value="Apply">
+            </form>
+        </div>
+        <div class="download-data">
+            <p><b>Click the below link to download the updated dataset</b></p>
+            {% if task_serial %}
+            <a href="{{ url_for('download_dataset', task_serial=task_serial) }}">Download Updated Dataset</a>
+             {% endif %}
+        </div>
+        <div class="show-analysis">
+            <form action="/show_analysis" method="POST">
+                <input type="hidden" name="task_serial" value="{{ task_serial }}">
+                <input type="submit" value="Analysis and Show">
+            </form>
+        </div>
+
+    </div>
+
+<script>
+    function showInput(option) {
+        var inputContainer = document.getElementById('inputContainer');
+        inputContainer.innerHTML = ''; // Clear previous input elements
+
+        if (option === 'dt') {
+            inputContainer.innerHTML = `
+                <br>
+                <p>Default Train Test Data Ratio is 80/20%. If you want to change the ratio please enter below.</P>
+                <label for="trn">Enter Train ratio in percentage (Ex: 70):</label>
+                <input type="text" id="trn" name="trn">
+                <label for="test">Enter Test ratio in percentage (Ex: 30):</label>
+                <input type="text" id="test" name="test"><br>
+
+            `;
+        } else if (option === 'svm') {
+            inputContainer.innerHTML = `
+                <br>
+                <p>Default Train Test Data Ratio is 80/20%. If you want to change the ratio please enter below.</P>
+                <label for="trn">Enter Train ratio in percentage (Ex: 70):</label>
+                <input type="text" id="trn" name="trn">
+                <label for="test">Enter  Test ratio in percentage (Ex: 30):</label>
+                <input type="text" id="test" name="test"><br>
+            `;
+        } else if (option === 'rf') {
+            inputContainer.innerHTML = `
+                <br>
+                <p>Default Train Test Data Ratio is 80/20%. If you want to change the ratio please enter below.</P>
+                <label for="trn">Enter Train ratio in percentage (Ex: 70):</label>
+                <input type="text" id="trn" name="trn">
+                <label for="test">Enter  Test ratio in percentage (Ex: 30):</label>
+                <input type="text" id="test" name="test"><br>
+            `;
+        }
+
+        // Add more conditions for other options...
+
+        // Clear values of previously selected options
+        document.querySelectorAll('[name^="options"]').forEach(function (element) {
+            if (element.value !== option) {
+                element.checked = false;
+            }
+        });
+    }
+</script>
+
+
+<script>
+    function redirectToMainc2() {
+        window.location.href = "/homepage";
+    }
+</script>
+
+<script>
+    function redirectToHelp() {
+        window.location.href = "/help_page";
+    }
+    function redirectToContact() {
+        window.location.href = "/contact_details";
+    }
+    function redirectToAnalysis() {
+        window.location.href = "/analysis_page";
+    }
+</script>
+
+
+
+<br><div id="footer">
+        <p>&copy; 2023 # Saikat Biswas, All rights reserved. </p>
+    </div>
+
+
+</body>
+</html>

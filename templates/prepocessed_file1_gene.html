@@ -1,0 +1,243 @@
+<!-- templates/preprocess.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preprocess Data</title>
+
+    <!-- Bootstrap CSS (add this link) -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+
+    <style>
+        body {
+            background-color: #f8f9fa; /* Set a light background color */
+        }
+
+        .header {
+            background-color: #343a40; /* Set header background color */
+            color: #ffffff; /* Set text color */
+            padding: 15px;
+
+        }
+
+        .main-content {
+            margin-top: 20px;
+        }
+
+        .content-section {
+            background-color: #5A6240; /* Set content background color */
+            padding: 8px;
+            margin-bottom: 5px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            line-height: 15px;
+            text-align:center;
+        }
+        .content-section-Filedetails {
+            background-color: #7B8037; /* Set content background color */
+            padding: 8px;
+            margin-bottom: 5px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            line-height: 12px;
+        }
+
+        .form-section {
+            background-color: #6E8F32; /* Set form background color */
+            padding: 5px;
+            border-radius: 4px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        /* Align buttons to the right */
+        .header .btn-group {
+            margin-left: 160px;
+        }
+
+        /* Ensure the button group is at the top right */
+        .header .btn-group {
+            display: flex;
+            align-items: flex-start;
+        }
+        /* Add margin between buttons */
+        .header .btn-group button {
+            margin-left: 10px;
+            background-color: white; /* Set background color for buttons */
+            padding: 8px 12px; /* Add padding to buttons for visual separation */
+            border: 2px solid #A08C3B; /* Add border for visual separation */
+            border-radius: 5px; /* Optional: Add border radius for rounded corners */
+        }
+
+        #footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 5px;
+            width: 100%;
+        }
+
+
+    </style>
+
+</head>
+<body>
+     <!-- Header -->
+    <div class="header">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <!-- Empty column to push buttons to the right -->
+                </div>
+                <div class="col text-right">
+                    <div class="btn-group">
+                        <button class="btn btn-light" onclick="redirectToMainc2()">Home</button>
+                        <button class="btn btn-light" onclick="redirectToAnalysis()">Analysis</button>
+                        <button class="btn btn-light"onclick="redirectToContact()">Contacts</button>
+                        <button class="btn btn-light" onclick="redirectToHelp()">Help</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Main Content -->
+    <div class="container main-content">
+
+        <!-- Preprocessed Dataset Analysis Section -->
+        <div class="content-section">
+            <h3>Analysis Preprocessed Dataset Unsupervised Learning</h3>
+        </div>
+
+        <!-- File Name and Task Serial Section -->
+        <div class="content-section-Filedetails">
+            <p>File Uploaded: {{ file_name }}</p>
+            <p>Task Serial: {{ task_serial }}</p>
+
+            {% if tasks %}
+                <p><b>Tasks Applied:</b></p>
+                <ul>
+                    {% for task in tasks %}
+                        <li>{{ task }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+
+        <!-- Form Section -->
+        <div class="form-section">
+            <form action="/postprocessed_work" method="POST">
+        <input type="hidden" name="file_name" value="{{ file_name }}">
+
+        {% if task_serial %}
+            <input type="hidden" name="task_serial" value="{{ task_serial }}">
+        {% endif %}
+
+        <label><h5><u>Select Any Option:</u></h5></label><br>
+        <input type="radio" name="options" value="dbscan" onclick="showInput('dbscan')"> Apply DBSCAN Clustering<br>
+        <input type="radio" name="options" value="kmeans" onclick="showInput('kmeans')"> Apply K-Means Clustering<br>
+        <input type="radio" name="options" value="dendogram"> Visualize Dendrogram Plot to Analyze Hierarchical Threshold<br>
+        <input type="radio" name="options" value="hierarchical" onclick="showInput('hierarchical')" > Apply Hierarchical Clustering<br>
+        <input type="radio" name="options" value="tsne"> Visualize and Analysis Data by T-SNE Ploting Method<br>
+        <input type="radio" name="options" value="pca" > Analysis PCA Ploting based Data Visualization<br>
+        <input type="radio" name="options" value="find_k_value"> Visualize Elbow Plot for finding K value on Kmeans algorithm<br>
+       <!-- <input type="radio" name="options" value="std_line_plot"> Show Standerd Daviation line Plot<br>   -->
+
+
+         <div id="inputContainer">
+        <!-- This container will dynamically hold the specific input elements based on the selected option -->
+        </div>
+
+        <br>
+
+        <input type="submit" value="Apply">
+    </form>
+
+    <h5><u>Click below link to download:</u></h5>
+    {% if task_serial %}
+        <a href="{{ url_for('download_dataset', task_serial=task_serial) }}">Download Updated Dataset</a>
+    {% endif %}
+
+    <form action="/visualize_analysis" method="POST">
+        <input type="hidden" name="task_serial" value="{{ task_serial }}">
+        <input type="submit" value="Analysis and Show">
+    </form>
+        </div>
+
+        <!-- Additional Divs as Needed -->
+
+    </div>
+     <!-- Your existing script goes here -->
+     <script>
+    function showInput(option) {
+        var inputContainer = document.getElementById('inputContainer');
+        inputContainer.innerHTML = ''; // Clear previous input elements
+
+        if (option === 'dbscan') {
+            inputContainer.innerHTML = `
+                <label for="eps">Enter EPS Value:</label>
+                <input type="text" id="eps" name="eps">
+                <label for="min_samples">Enter Min Samples Value:</label>
+                <input type="text" id="min_samples" name="min_samples"><br>
+                <label for="additional_option">Select Specific Option:</label>
+                    <select id="additional_option" name="additional_dbscan_option">
+                        <option value="tsne_dbscan">Apply TSNE Before DBscan </option>
+                        <option value="pca_dbscan">Apply PCA Before DBscan </option>
+                        <option value="default_dbscan">Apply DBscan Algorithm</option>
+                        <!-- Add more options as needed -->
+                    </select>
+            `;
+        } else if (option === 'kmeans') {
+            inputContainer.innerHTML = `
+                <label for="k_value">Enter K Value:</label>
+                <input type="text" id="k_value" name="k_value">
+            `;
+        } else if (option === 'hierarchical') {
+            inputContainer.innerHTML = `
+                <label for="hierarchical_threshold">Enter threshold Value Analyzing Dendrogram Plot:</label>
+                <input type="text" id="hierarchical_threshold" name="hierarchical_threshold">
+            `;
+        }
+
+        // Add more conditions for other options...
+
+        // Clear values of previously selected options
+        document.querySelectorAll('[name^="options"]').forEach(function (element) {
+            if (element.value !== option) {
+                element.checked = false;
+            }
+        });
+    }
+</script>
+
+<script>
+    function redirectToMainc2() {
+        window.location.href = "/homepage";
+    }
+    function redirectToContact() {
+        window.location.href = "/contact_details";
+    }
+    function redirectToAnalysis() {
+        window.location.href = "/analysis_page";
+    }
+</script>
+<script>
+    function redirectToHelp() {
+        window.location.href = "/help_page";
+    }
+</script>
+
+<br>
+<div id="footer">
+        <p>&copy; 2023 # Saikat Biswas, All rights reserved. </p>
+    </div>
+
+</body>
+</html>
+
+
+
+
+
+

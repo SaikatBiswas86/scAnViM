@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CSV Analysis Results</title>
+     <style>
+        /* Define the CSS styles for the images */
+        .custom-image {
+            width: 500px; /* Set the width */
+            height: 300px; /* Maintain aspect ratio */
+            border: 5px solid #333; /* Add a border */
+            margin: 10px; /* Add spacing between images */
+            border-radius: 10px; /* Rounded corners */
+        }
+
+        /* Define the CSS styles for the table */
+        table {
+            border-collapse: collapse;
+            width: 80%;
+            margin: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h1>CSV Analysis Results: </h1>
+
+     <img src="{{ plot_path }}" alt="Error: Ploting isn't possible"class="custom-image">
+
+    <!--
+    This is a
+    multiple-line comment.
+    -->
+    <!-- Standard Deviation Table (Assuming it's available in the dataframe) -->
+    <h2>Analised Result of Data:</h2>
+    <table>
+        <tr>
+            <th>Column Name</th>
+            <th>Standard Deviation</th>
+        </tr>
+        </tr>
+    {% for index, row in std_deviation.iterrows() %}
+        <tr>
+            <td>{{ row['Column Name'] }}</td>
+            <td>{{ row['Standard Deviation'] }}</td>
+        </tr>
+    {% endfor %}
+    </table>
+
+
+</body>
+</html>

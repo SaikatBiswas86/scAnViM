@@ -1,0 +1,182 @@
+{
+    "intents": [
+        {
+            "tag": "greeting",
+            "patterns": [
+                "Hello",
+                "Hi",
+                "Hey",
+                "Hi..",
+                "Hi.",
+                "Hey",
+                "hi..",
+                "Hii..",
+                "Hii.",
+                "Hey.."
+            ],
+            "responses": [
+                "Hello!",
+                "Hi there!",
+                "Need any help?",
+                "Hey! How can I help you?"
+            ]
+        },
+        {
+            "tag": "goodbye",
+            "patterns": [
+                "Goodbye",
+                "Bye",
+                "See you later"
+            ],
+            "responses": [
+                "Goodbye!",
+                "Have a great day!",
+                "See you later!"
+            ]
+        },
+        {
+            "tag": "age",
+            "patterns": [
+                "How old are you?",
+                "What's your age?",
+                "Age?"
+            ],
+            "responses": [
+                "I am just a chatbot and don't have an age."
+            ]
+        },
+        {
+            "tag": "thanks",
+            "patterns": [
+                "thnank you",
+                "thanks",
+                "tnx"
+            ],
+            "responses": [
+                "Welcome!",
+                "Welcome, Any time",
+                "For your services"
+            ]
+        },
+        {
+            "tag": "help",
+            "patterns": [
+                "need help",
+                "help",
+                "Can you help me",
+                "need suggestion",
+                "i have queries",
+                "help me",
+                "question"
+            ],
+            "responses": [
+                "Yes, Sure anytime. Ask please!",
+                "Any time. Provide your question",
+                "For your services, question please:"
+            ]
+        },
+        {
+            "tag": "fine",
+            "patterns": [
+                "how are you?"
+            ],
+            "responses": [
+                "As an AI chatbot, I am always good to serve you."
+            ]
+        },
+        {
+            "tag": "0f638872-ea52-476f-9e67-92b5f30a8a53",
+            "patterns": [
+                "Who is your creator?"
+            ],
+            "responses": [
+                "Saikat Biswas"
+            ]
+        },
+        {
+            "tag": "8c84bd8d-4adb-45f6-8ac2-e3a1a8479293",
+            "patterns": [
+                "capital of india?"
+            ],
+            "responses": [
+                "Delhi"
+            ]
+        },
+        {
+            "tag": "single_cell_gene",
+            "patterns": [
+                "What is single cell Gene?",
+                "single cell Gene data analysis?",
+                "gene?",
+                "gene details",
+                "provide single cell gene expression details?",
+                "how is single cell gene?"
+            ],
+            "responses": [
+                "Single-cell gene expression refers to the measurement and analysis of gene expression at the individual cell level."
+
+            ]
+        },
+        {
+            "tag": "gene",
+            "patterns": [
+                "What is single cell Gene?",
+                "single cell Gene data analysis?",
+                "single cell gene?",
+                "single cell gene details",
+                "provide single cell gene expression details",
+                "how is single cell gene?",
+                "single cell gene?",
+                "single cell gene details in research",
+                "research on single cell gene expression",
+                "details of single cell gene",
+                "detailsof single cellgene"
+            ],
+            "responses": [
+                " Single-cell gene expression refers to the measurement and analysis of gene expression at the individual cell level. Single-cell gene expression analysis allows researchers to examine the gene expression patterns of individual cells, providing insights into the diversity and variability within a cell population. This technique has become increasingly important in fields such as genomics, transcriptomics, and systems biology."
+
+            ]
+        },
+        {
+            "tag": "dataset",
+            "patterns": [
+                "Dataset",
+                "datasets",
+                "csv Dataset",
+                "csv datasets",
+                "Dataset csv",
+                "datasets csv",
+                "csv formate Dataset",
+                "formate csv datasets",
+                "single cell Dataset",
+                "single cell gene Dataset",
+                "Dataset of single cell gene",
+                "I need single cell Dataset",
+                "Can you provide single cell datasets"
+            ],
+            "responses": [
+                " https://drive.google.com/file/d/1TY9r6OSWoBNMF2yKVU_Kydi2oOzKI4vy/view?usp=drive_link."
+
+            ]
+        },
+
+        {
+            "tag": "love",
+            "patterns": [
+                "I Love You"
+            ],
+            "responses": [
+                "I love you too"
+            ]
+        },
+        {
+            "tag": "ad263b50-acf7-46ab-8af3-3fad092c6630",
+            "patterns": [
+                "capital of india"
+            ],
+            "responses": [
+                "Dellhi"
+            ]
+        }
+    ]
+}

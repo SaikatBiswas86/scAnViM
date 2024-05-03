@@ -1,0 +1,337 @@
+<!-- templates/raw_preprocessing_file2.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preprocess Raw Data</title>
+
+    <!-- Bootstrap CSS (add this link) -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+
+    <style>
+        body {
+            background-color: #f8f9fa; /* Set a light background color */
+        }
+
+        .header {
+            background-color: #343a40; /* Set header background color */
+            color: #ffffff; /* Set text color */
+            padding: 15px;
+        }
+
+        .main-content {
+            margin-top: 20px;
+        }
+
+        .content-section {
+            background-color: #5A6240; /* Set content background color */
+            padding: 8px;
+            margin-bottom: 5px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            line-height: 15px;
+            text-align: center;
+        }
+
+        .content-section-Filedetails {
+            background-color: #7B8037; /* Set content background color */
+            padding: 8px;
+            margin-bottom: 5px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            line-height: 12px;
+        }
+
+        .form-section {
+            background-color: #CED2AA; /* Set form background color */
+            padding: 5px;
+            border-radius: 4px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .header .btn-group {
+            margin-left: 160px;
+        }
+
+        .header .btn-group {
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .header .btn-group button {
+            margin-left: 10px;
+            background-color: white;
+            padding: 8px 12px;
+            border: 2px solid #A08C3B;
+            border-radius: 5px;
+        }
+
+        .download-data {
+            height: 65px;
+            margin-top: 7px;
+            background-color: #B5BB7B; /* Set content background color */
+            padding: 5px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            line-height: 15px;
+        }
+
+        .show-analysis {
+            height: 60px;
+            margin-top: 7px;
+            background-color: #6D9781; /* Set content background color */
+            padding: 5px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            line-height: 15px;
+        }
+        .show-analysis input[type="submit"] {
+        background-color: #858B6A; /* Set the background color */
+        color: #ffffff; /* Set the text color */
+        padding: 10px 15px; /* Adjust padding for better appearance */
+        border: none; /* Remove the border */
+        border-radius: 5px; /* Add border radius for rounded corners */
+        margin-top: 10px; /* Adjust top margin */
+        cursor: pointer; /* Add pointer cursor on hover */
+    }
+
+    .send_data_toprocessed {
+            height: 40px;
+            margin-top: 7px;
+            background-color: #6D9775; /* Set content background color */
+            padding: 5px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            line-height: 15px;
+        }
+    #footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 5px;
+            width: 100%;
+        }
+
+    </style>
+
+
+
+
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <!-- Empty column to push buttons to the right -->
+                </div>
+                <div class="col text-right">
+                    <div class="btn-group">
+                        <button class="btn btn-light" onclick="redirectToMainc2()">Home</button>
+                        <button class="btn btn-light" onclick="redirectToAnalysis()">Analysis</button>
+                        <button class="btn btn-light"onclick="redirectToContact()">Contacts</button>
+                        <button class="btn btn-light" onclick="redirectToHelp()">Help</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container main-content">
+
+        <!-- Supervised Learning Analysis Section -->
+        <div class="content-section">
+            <h3>Apply Basic Preprocessing on Dataset</h3>
+        </div>
+
+        <!-- File Name and Task Serial Section -->
+        <div class="content-section-Filedetails">
+            <p>File Uploaded: {{ file_name }}</p>
+            <p>Task Serial: {{ task_serial }}</p>
+
+            {% if task_serial %}
+                <p><b>Tasks Applied:</b></p>
+                <ul>
+                    {% for task in tasks %}
+                        <li>{{ task }}</li>
+                    {% endfor %}
+                </ul>
+            <p>Updated Dataset Serial No: {{ task_serial }}</p>
+            {% endif %}
+        </div>
+
+       <!-- Step 1: Ask for dataset type -->
+    <label for="datasetType">Select Dataset Type:</label>
+
+<br>
+    <input type="radio" id="unsupervised" name="datasetType" value="unsupervised" onchange="handleDatasetType()">
+    <label for="unsupervised">Unlabeled Dataset (Unsupervised)</label>
+<br>
+    <input type="radio" id="supervised" name="datasetType" value="supervised" onchange="handleDatasetType()" checked>
+    <label for="supervised">Labeled Dataset (Supervised)</label>
+    <!-- Step 2: Container for dynamic form fields -->
+
+        <!-- Step 1: Fixed set of preprocessing options -->
+<div class="form-section">
+    <form id="preprocessingForm" action="" method="POST">
+        <input type="hidden" name="file_name" value="{{ file_name }}">
+        {% if task_serial %}
+            <input type="hidden" name="task_serial" value="{{ task_serial }}">
+        {% endif %}
+
+        <label><p><u><b>Select Any Preprocessing Option:</b></u></p></label><br>
+
+        <!-- Fixed set of preprocessing options -->
+        <input type="radio" name="options" value="null_reduction"> Apply Null Value Handling using Fillna=0 method.<br>
+                <input type="radio" name="options" value="dataset_transpose"> Transpose the Dataset.<br>
+                <input type="radio" name="options" value="delete_feature" onclick="showInput('delete_feature')"> Delete Any Specific Feature/ Column.<br>
+                        <input type="radio" name="options" value="label_encoding"> Apply Label Encoding to convert String Features into Numeric.<br>
+                <input type="radio" name="options" value="MinMax_normalization"> Normalize the data using Min_max Normalization.<br>
+                <input type="radio" name="options" value="Zscore_normalization"> Normalize the data using Z-Score Normalization.<br>
+                <input type="radio" name="options" value="standard_deviation"> Apply Feature Selection, based on Elimination (where features SD=0).<br>
+                <input type="radio" name="options" value="feature_select_VarianceThreshold" onclick="showInput('feature_select_VarianceThreshold')"> Apply Feature selection Based on VarianceThreshold.<br>
+                <input type="radio" name="options" value="s_featureselection" onclick="showInput('s_featureselection')"> Keep Important features using SelectKBest Method.<br>
+          <br>
+          <div id="inputContainer">
+           <!-- This container will dynamically hold the specific input elements based on the selected option -->
+          </div>
+
+
+        <input type="submit" value="Apply">
+    </form>
+        </div>
+
+        <!-- Your existing script goes here -->
+<script>
+    // JavaScript code here
+    // Remember the user's choice
+    document.addEventListener('DOMContentLoaded', function() {
+        var storedChoice = localStorage.getItem('datasetType');
+        if (storedChoice) {
+            var radioBtn = document.getElementById(storedChoice);
+            if (radioBtn) {
+                radioBtn.checked = true;
+                handleDatasetType(); // Call the function to show options based on the stored choice
+            }
+        }
+    });
+
+    function handleDatasetType() {
+        var datasetType = document.querySelector('input[name="datasetType"]:checked').value;
+        var preprocessingForm = document.getElementById('preprocessingForm');
+
+        // Set the action attribute of the form based on dataset type
+        if (datasetType === 'supervised') {
+            preprocessingForm.action = '/supervised_work';
+        } else if (datasetType === 'unsupervised') {
+            preprocessingForm.action = '/apply_preprocessing';
+        }
+
+        // Save the choice to local storage
+        localStorage.setItem('datasetType', datasetType);
+    }
+</script>
+
+
+
+
+        <!-- Download Data Section -->
+        <div class="download-data">
+            <p><b>Click the below link to download the updated dataset</b></p>
+            {% if task_serial %}
+                <a href="{{ url_for('download_dataset', task_serial=task_serial) }}">Download Updated Dataset</a>
+            {% endif %}
+        </div>
+
+        <!-- Show Analysis Section -->
+        <div class="show-analysis">
+            <form action="/visualize_analysis" method="POST">
+        <input type="hidden" name="task_serial" value="{{ task_serial }}">
+        <input type="submit" value="Analysis and Show">
+    </form>
+        </div>
+
+
+
+    <div class="send_data_toprocessed">
+        <!-- send dataset for applying ML unsupervised algo-->
+        <form action="/send_cleanDataset_preprocesed_html" method="POST">
+        <input type="hidden" name="file_name" value="{{ file_name }}">
+        <input type="hidden" name="task_serial" value="{{ task_serial }}">
+        <!-- Add other necessary inputs -->
+        <input type="submit" value="Preprocessed Done. Pass Dataset for Unsupervised ML Analysis">
+        </form>
+    </div>
+    <div class="send_data_toprocessed">
+        <!-- send dataset for applying ML unsupervised algo-->
+        <form action="/send_cleanDataset_preprocesed_html_supervised" method="POST">
+        <input type="hidden" name="file_name" value="{{ file_name }}">
+        <input type="hidden" name="task_serial" value="{{ task_serial }}">
+        <!-- Add other necessary inputs -->
+        <input type="submit" value="Preprocessed Done. Pass Dataset for Supervised ML Analysis">
+        </form>
+    </div>
+
+    </div>
+
+
+    <!-- Your existing script goes here -->
+     <script>
+    function showInput(option) {
+        var inputContainer = document.getElementById('inputContainer');
+        inputContainer.innerHTML = ''; // Always clear the container
+
+        if (option === 'feature_select_VarianceThreshold') {
+            inputContainer.innerHTML = `
+                <label for="vt">Enter Variance Threshold value you want to apply: </label>
+                <input type="text" id="vt" name="vt">
+            `;
+        } else if (option === 'delete_feature') {
+            inputContainer.innerHTML = `
+                <label for="vt">Enter Feature Name you want to Delete: </label>
+                <input type="text" id="delete_f" name="delete_f">
+            `;
+        } else if (option === 's_featureselection') {
+            inputContainer.innerHTML = `
+                <label for="vt">Enter how many important features you to keep in percentage (Ex: 70): </label>
+                <input type="text" id="top_features" name="top_features">
+            `;
+            }
+        // Clear values of previously selected options
+        document.querySelectorAll('[name^="options"]').forEach(function (element) {
+            if (element.value !== option) {
+                element.checked = false;
+            }
+        });
+    }
+</script>
+
+<script>
+    function redirectToMainc2() {
+        window.location.href = "/homepage";
+    }
+    function redirectToContact() {
+        window.location.href = "/contact_details";
+    }
+    function redirectToAnalysis() {
+        window.location.href = "/analysis_page";
+    }
+</script>
+<script>
+    function redirectToHelp() {
+        window.location.href = "/help_page";
+    }
+</script>
+
+
+    <br>
+<div id="footer">
+        <p>&copy; 2023 # Saikat Biswas, All rights reserved. </p>
+    </div>
+
+</body>
+</html>

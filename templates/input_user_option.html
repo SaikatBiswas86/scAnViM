@@ -1,0 +1,157 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CSV Analysis</title>
+    <style>
+        /* Add CSS for styling */
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 400px;
+
+        }
+
+        #header {
+            padding-top: 40px;
+            width: 100%;
+            height: 80px;
+            text-align: center;
+            background-color: #B8860B;
+            /* Set your desired background color here */
+            color: white;
+        }
+
+        #user-selection-container {
+
+            display: flex;
+            width: 100%;
+            height: 300px;
+            background-color: #808080;
+            /* Set your desired background color here */
+            color: black;
+        }
+
+        #user-selection {
+            flex: 40%;
+            padding: 35px;
+        }
+
+        #info-and-figure {
+            flex: 60%;
+            padding-left: 30px;
+        }
+
+        #upload-csv {
+            padding:30px;
+
+            width: 100%;
+            height: 100px;
+        }
+    </style>
+</head>
+<body>
+    <div id="header">
+        <h1>CSV Data Analysis</h1>
+    </div>
+
+    <div id="user-selection-container">
+        <form action="/upload" method="POST" enctype="multipart/form-data">
+            <div id="user-selection">
+                <label for="operation">Select Operation:</label>
+                <select name="operation" required onchange="showInfo(this.value)">
+                    <option value="std_deviation">Calculate Standard Deviation</option>
+                    <option value="tsne_plot">Analyse DBSCAN clustering with T-sne</option>
+                    <option value="correlation_coefficient">View Correlation Coefficient</option>
+                    <option value="confusion_matrix">Generate Confusion Matrix</option>
+                    <!-- Add more operation options as needed -->
+                </select>
+            </div>
+            <div id="info-and-figure">
+                <h2 id="operation-title">Operation Title</h2>
+                <p id="operation-description">This section will display relevant information about the selected operation.</p>
+                <img src="static/default_image/select_option.png" alt="Error: Image plotting failed." style="width:480px;height:200px;" id="operation-image">
+            </div>
+            <div id="upload-csv">
+
+            <label for="csv_file">Upload a CSV File:</label>
+            <input type="file" name="csv_file" accept=".csv" required>
+            <br>
+            <input type="submit" value="Upload">
+
+           </div>
+        </form>
+    </div>
+
+
+
+    <script>
+        // JavaScript to show relevant information/ Instruction based on the selected option
+        function showInfo(selectedOption) {
+            var options = {
+                std_deviation: {
+                    title: "Standard Deviation",
+                    description: "1. File should be in CSV (Comma Separated Value) format. \n2. Please check there is no mixed data types in the dataset. \n   N.B: Columns with both (integer + string) data types are not allowed. \n3. If you encounter errors, please review your dataset.",
+                    image: "static/default_image/sd_instruction_image.jpg"
+                },
+                tsne_plot: {
+                    title: "DBSCAn with T-sne",
+                    description: "1. File should be in CSV (Comma Separated Value) format DB. \n2. Please check there is no mixed data types in the dataset. \n   N.B: Columns with both (integer + string) data types are not allowed. \n3. If you encounter errors, please review your dataset.",
+                    image: "static/default_image/sd_instruction_image.jpg"
+                },
+                correlation_coefficient: {
+                    title: "Correlation Coefficient",
+                    description: "1. File should be in CSV (Comma Separated Value) format. \n 2. Please check there is no mixed data types in the dataset.\n 3. If you encounter errors, please review your dataset.",
+                    image: "static/default_image/cc_instruction_image.jpg"
+                },
+                confusion_matrix: {
+                    title: "Confusion Matrix",
+                    description: "1. File should be in CSV (Comma Separated Value) format. \n 2. Please check there is no mixed data types in the dataset.\n 3. The last two columns of your dataset must be predicted and actual columns. \n 4. If you encounter errors, please review your dataset.",
+                    image: "static/default_image/cm_instruction_image.jpg"
+                }
+                // Add more options as needed
+            };
+
+            var selected = options[selectedOption];
+            if (selected) {
+                document.getElementById("operation-title").innerText = selected.title;
+                document.getElementById("operation-description").innerText = selected.description;
+                document.getElementById("operation-image").src = selected.image;
+            }
+        }
+    </script>
+</body>
+</html>
+
+
+
+
+<!--
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CSV Analysis</title>
+</head>
+<body>
+    <h1>CSV Analysis</h1>
+    <form action="/upload" method="POST" enctype="multipart/form-data">
+        <label for="csv_file">Upload a CSV File:</label>
+        <input type="file" name="csv_file" accept=".csv" required>
+        <br>
+        <label for="operation">Select Operation:</label>
+        <select name="operation" required>
+            <option value="std_deviation">Calculate Standard Deviation</option>
+            <option value="correlation_coefficient">View correlation_coefficient</option>
+            <option value="confusion_matrix">Generate Confusion Matrix</option>
+
+        </select>
+        <br>
+        <input type="submit" value="Submit">
+    </form>
+</body>
+</html>
+-->
+
+

@@ -1,0 +1,563 @@
+<!-- templates/upload.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSV Analysis</title>
+
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+
+    <style>
+    .header {
+            background-color: #343a40; /* Set header background color */
+            color: #ffffff; /* Set text color */
+            padding: 15px;
+        }
+
+        .header .btn-group {
+            margin-left: 160px;
+        }
+
+        .header .btn-group {
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .header .btn-group button {
+            margin-left: 10px;
+            background-color: white;
+            padding: 8px 12px;
+            border: 2px solid #A08C3B;
+            border-radius: 5px;
+        }
+
+
+
+        /* Add CSS for styling */
+        #header {
+            padding-top: 5px;
+            padding-bottom: 7px;
+            width: 100%;
+            height: 70px;
+            text-align: center;
+            background-color: #B8860B;
+            /* Set your desired background color here */
+            color: white;
+        }
+
+
+        body {
+
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 250px;
+            overflow: auto;
+        }
+
+        #user-selection-container {
+
+            width: 100%;
+            height: 200px;
+            background-color: #808080;
+            /* Set your desired background color here */
+            color: black;
+        }
+
+        #user-selection {
+            flex: 40%;
+            margin-left: 35px;
+            margin-top: 5px;
+            padding: 20px;
+            width: 350px;
+        }
+
+        #upload-csv {
+            margin-left: 35px;
+            padding:20px;
+            width: 100%;
+            height: 110px;
+            margin-bottom: 10px;
+        }
+        #details {
+            margin-top: 15px;
+            display: flex;
+            width: 100%;
+
+        }
+
+        #left-content {
+            flex: 60%;
+            padding: 20px;
+            margin-left: 35px;
+        }
+
+        #right-content {
+            flex: 40%;
+            padding: 20px;
+            margin-left: 35px;
+        }
+
+        #contactdetails {
+            display: flex;
+            width: 100%;
+            margin-top: 15px;
+        }
+
+        #contactleft-content {
+            flex: 60%;
+            padding: 20px;
+            margin-left: 35px;
+        }
+
+        #contactright-content {
+            flex: 40%;
+            padding: 20px;
+            margin-left: 30px;
+        }
+
+        #footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 5px;
+            width: 100%;
+        }
+
+
+        #chat-container {
+        display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    position: fixed;
+    margin-bottom: 32px;
+    bottom: 10px;
+    right: 2px;
+    width: 240px; /* Adjust max-width as needed */
+    height: 50px; /* Adjust max-height as needed */
+    background-color: #f5f5f5;
+    border: 1px solid #ccc;
+    overflow: hidden;
+    transition: height 0.3s ease-out;
+    border: 1.5px solid black;
+        }
+
+        #messages-container {
+    flex: 1;
+    overflow-y: auto; /* Enable vertical scrollbar when needed */
+    padding: 8px;
+     }
+
+         .user-message, .chatbot-message {
+        padding: 8px;
+    margin: 4px;
+    border-radius: 8px;
+    max-width: 70%; /* Adjust the max width as needed */
+    }
+
+    .user-message {
+        background-color: #87CEEB; /* Light blue for user messages */
+        align-self: flex-start;
+    }
+
+    .chatbot-message {
+        background-color: #98FB98; /* Light green for chatbot messages */
+        align-self: flex-end;
+        min-width: 50%; /* Adjust the min width as needed */
+        margin-left: 60px;
+
+    }
+
+    #user-input-container {
+        display: flex;
+        align-items: center;
+        position: fixed;
+        bottom: 0;
+        right: 0;
+        margin-bottom: 8px;
+        max-width: 243px; /* Set max-width to the width of the chatbot container */
+        width: 100%; /* Ensure it takes the full width within the chatbot container */
+        background-color: #f0f0f0; /* Light gray for user input container */
+    }
+
+        #chat-input {
+           flex: 1;
+           margin-right: 8px;
+        }
+
+    #submit-button {
+       width: auto; /* Set width to auto to adjust based on content */
+       padding: 10px;
+       box-sizing: border-box;
+       background-color: #4caf50;
+       color: white;
+       border: none;
+       cursor: pointer;
+        }
+
+
+
+    #chat-initial-message {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px;
+    margin: 4px;
+    border-radius: 8px;
+    width: 70%; /* Set width to 70% */
+    max-width: 70%;
+    }
+
+    #expand-button {
+    width: 10%; /* Set width to 20% */
+    cursor: pointer;
+    background-color: #2ecc71;
+    color: white;
+    border: none;
+    padding: 5px;
+    border-radius: 50%;
+    position: relative;
+    top: -70%; /* Adjust as needed */
+    margin-right: 10px;
+    margin-left: 190px;
+    }
+
+
+     /* Style the clickable div */
+        .clickable-div {
+            position: relative;
+            width: 98%;
+            height: 200px;
+            overflow: hidden;
+            cursor: pointer;
+            margin-top: 2px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-left: 55px;
+            margin-right: 40px;
+            margin-bottom: 7px;
+        }
+
+        /* Style the image to cover the entire div */
+        .clickable-div img {
+            width: 98%;
+            height: 100%;
+            object-fit: cover;
+            margin-top: 2px;
+            border-radius: 3px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-right: 40px;
+        }
+
+        /* Style the overlay divs */
+        .overlay {
+            position: absolute;
+            color: white;
+            text-align: center;
+            width: calc(33.3333% - 30px);
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .overlay1 {
+            top: 20%;
+            left: 10%;
+            transform: translateX(0);
+            font-size: 24px;
+        }
+
+        .overlay2 {
+            top: 50%;
+            left: calc(30.3333% + 30px);
+            transform: translateY(-50%);
+            font-size: 24px;
+        }
+
+        .overlay3 {
+            top: 70%;
+            left: calc(66.6666% + 60px);
+            transform: translate(-50%, -50%);
+            font-size: 24px;
+        }
+        .content-section {
+            background-color: #E2E5D4; /* Set content background color */
+            padding: 8px;
+            margin-bottom: 5px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            line-height: 15px;
+            text-align:center;
+            margin-left: 54px;
+            margin-right:5px;
+            margin-top:10px
+        }
+
+        #details3 {
+            display: flex;
+            width: 98%;
+            margin-left: 22px;
+        }
+        #left-content3 {
+            flex: 60%;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 8px;
+
+        }
+
+        #right-content3 {
+            margin-left: 200px;
+            flex: 40%;
+            padding: 20px;
+            margin-left: 35px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            line-height: 15px;
+            text-align:center;
+
+
+        }
+
+
+
+
+
+    </style>
+</head>
+<body>
+
+<!-- Header -->
+    <div class="header">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <!-- Empty column to push buttons to the right -->
+                </div>
+                <div class="col text-right">
+                    <div class="btn-group">
+                        <button class="btn btn-light"onclick="redirectToMainc2()">Home</button>
+                        <button class="btn btn-light"onclick="redirectToAnalysisPage()">Analysis</button>
+                        <button class="btn btn-light"onclick="redirectToContact()">Contacts</button>
+                        <button class="btn btn-light" onclick="redirectToHelp()">Help</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+<div id="header" >
+    <h1>Single Cell Gene Analysis</h1>
+    </div>
+
+
+
+    <div id="user-selection-container">
+        <form action="/process_upload" method="POST" enctype="multipart/form-data">
+            <div id="user-selection">
+                <label for="operation">Select Operation:</label>
+                <select name="operation" required onchange="showInfo(this.value)">
+
+                    <option value="processed">Unsupervised Learning on Processed Dataset</option>
+                    <option value="supervised">Apply Supervised Learning on Processed Dataset</option>
+                    <option value="raw">Apply Preprocessing on Raw/Unprocessed Dataset</option>
+                </select>
+            </div>
+            <div id="upload-csv">
+                <label for="csv_file">Upload a CSV File:</label>
+                <input type="file" name="csv_file" accept=".csv" required>
+                <br>
+                <input type="submit" value="Upload">
+            </div>
+        </form>
+    </div>
+    <div id="details">
+        <div id="left-content">
+            <p><h4>Single‐cell RNA sequencing:</h4>Single‐cell RNA sequencing (scRNA‐seq) technology has become the state‐of‐the‐art approach for unravelling the heterogeneity and complexity of RNA transcripts within individual cells, <br>as well as revealing the composition of different cell types and functions within highly organized tissues/organisms. Since its first discovery in 2009<br>  </p>
+        </div>
+        <div id="right-content">
+            <img src="static/default_image/flow1.jpg" alt="Error: Image plotting failed." style="width: 300px; height: 150px;">
+        </div>
+    </div>
+
+
+<div class="content-section">
+            <p><b><i>Analyzed Result: </i></b></p>
+        </div>
+<!-- Clickable div with image and overlaid text -->
+    <div class="clickable-div" onclick="redirectToAnalysisPage()">
+        <img src="{{ url_for('static', filename='default_image/RNA3.jpg') }}" alt="error Image">
+        <div class="overlay overlay1">Analyzed Result for Unlabeled Data</div>
+        <div class="overlay overlay2">Analyzed Result for Labeled Data</div>
+        <div class="overlay overlay3">Analyzed Result for Data preprocessing</div>
+    </div>
+
+
+<!-- Take chatbot Help
+<div class="content-section">
+        <p><b><i>Contact Us:</i></b></p>
+    </div>
+-->
+     <br><p style="color: #ffffff; font-size: 20px;"><b><i><u>Sample Unlabeled Dataset :</u></i></b></p>
+    <div id="details3">
+        <div id="right-content3">
+            <img src="static/default_image/chatbot contacts.png" alt="Error: Image plotting failed." style="width: 300px; height: 150px;">
+        </div>
+        <div id="left-content3">
+            <p><i> <b  style="font-size: larger;"><u>Take ChatBot Help at any time.</u></b><br> <b>Chatbot Is On The Bottom Right In Minimized Condition. Click the ( + ) to Expand.</b> <br> N.B: Be sure to follow the instruction:
+                <br> #1. Try to ask related to Gene, single cell analysis and related to working pipeline, to get proper answer.<br>#2. To Provide Any Review, Or Report Any Problem You Just Have To Type/Enter Following The Formate:<br> ( Statement // Rating value (1 to 5) // User any contact details) </i>  </p>
+        </div>
+    </div>
+<!-- Take chatbot Help -->
+
+
+
+    <div id="contactdetails">
+        <div id="contactleft-content">
+            <p><h4>Project Details:</h4> This project was done as a part of the thesis of M. Tech in CSE,<b> National Institute of Technology, Durgapur</b>, by the supervision of mam, <b>Dr. Monalisa Mandal, </b> Assistant Professor on NIT Durgapur.<br> If you face any problem or need any help please feel free to <a href="{{ url_for('contact_details') }}">contact</a> us. <br><br><b>Done By:</b><br><b>Saikat Biswas</b> <br>Phone no: 6291351377<br>Email: bistritosaikat86@gmail.com  </p>
+        </div>
+        <div id="contactright-content">
+            <img src="static/default_image/saikat.jpg" alt="Error: Image plotting failed." style="width: 190px; height: 200px;margin-left: 60px;;margin-top: 15px;">
+        </div>
+    </div>
+
+
+
+    <div id="chat-container">
+
+        <div id="chat-container_upperBox">
+            <div id="chat-initial-message" ><p> <b>This is "ChatBot" <br>Yor personal AI Assistant.</b> </p>  </p></div>
+            <div id="expand-button" onclick="toggleChat()">+</div>
+        </div>
+
+
+
+        <div id="messages-container"></div>
+    </div>
+
+<div id="user-input-container">
+    <input type="text" id="chat-input" placeholder="Type your message...">
+    <button id="submit-button" onclick="handleUserInput()">Send</button>
+</div>
+
+    <div id="footer">
+        <p>&copy; 2023 # Saikat Biswas, All rights reserved. </p>
+    </div>
+
+
+
+    <script>
+        function showInfo(value) {
+            var form = document.querySelector('form');
+            if (value === 'supervised') {
+                form.action = '/process_upload?operation=supervised';
+            } else if (value === 'processed') {
+                form.action = '/process_upload?operation=processed';
+            } else {
+                form.action = '/process_upload?operation=raw';
+            }
+        }
+
+        // Ensure the initial form action is set
+        document.addEventListener('DOMContentLoaded', function () {
+            var form = document.querySelector('form');
+            var selectedOption = form.querySelector('select[name="operation"]').value;
+            showInfo(selectedOption);
+    });
+    </script>
+
+
+    <script>
+    // Function to send user message and receive chatbot response
+function sendMessage(message) {
+    var messagesContainer = document.getElementById('messages-container');
+
+    // Add user message to messages container
+    var userMessageElement = document.createElement('div');
+    userMessageElement.className = 'user-message';
+    userMessageElement.textContent = message;
+    messagesContainer.appendChild(userMessageElement);
+
+    // Send the user message to the server and get the chatbot response
+    fetch('/chat', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ user_msg: message }),
+    })
+    .then(response => response.json())
+    .then(data => {
+        var chatbotResponse = data.response;
+
+        // Add chatbot response to messages container
+        var chatbotMessageElement = document.createElement('div');
+        chatbotMessageElement.className = 'chatbot-message';
+        chatbotMessageElement.textContent = chatbotResponse;
+        messagesContainer.appendChild(chatbotMessageElement);
+
+        // Scroll to the bottom to show the latest message
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    })
+    .catch(error => {
+        console.error('Error sending/receiving chat messages:', error);
+    });
+}
+
+// Function to handle user input and send messages
+function handleUserInput() {
+    var userMsg = document.getElementById("chat-input").value;
+    sendMessage(userMsg);
+
+    // Clear the input field
+    document.getElementById("chat-input").value = "";
+}
+</script>
+
+<script>
+    function toggleChat() {
+        var chatContainer = document.getElementById('chat-container');
+        var expandButton = document.getElementById('expand-button');
+
+        // Check if the chat container is minimized
+        if (chatContainer.classList.contains('minimized')) {
+            chatContainer.style.height = '270px'; /* Adjust max height as needed */
+            expandButton.innerHTML = '-';
+        } else {
+            chatContainer.style.height = '45px'; /* Minimized height */
+            expandButton.innerHTML = '+';
+        }
+
+        // Force a reflow before toggling the 'minimized' class
+        chatContainer.offsetHeight;
+
+        // Toggle the 'minimized' class
+        chatContainer.classList.toggle('minimized');
+    }
+
+    // ... (unchanged)
+</script>
+<script>
+    function redirectToMainc2() {
+        window.location.href = "/homepage";
+    }
+    function redirectToContact() {
+        window.location.href = "/contact_details";
+    }
+    function redirectToAnalysisPage() {
+            window.location.href = "/analysis_page";
+        }
+</script>
+
+<script>
+    function redirectToHelp() {
+        window.location.href = "/help_page";
+    }
+</script>
+
+
+
+</body>
+</html>

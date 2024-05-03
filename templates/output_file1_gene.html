@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Show Output</title>
+    <!-- Bootstrap CSS (add this link) -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+
+    <style>
+        .custom-image{
+            width: 250px;
+            height: 180px;
+            border: 3px solid #333;
+            margin: 10px;
+            border-radius: 10px;
+       }
+       body {
+            background-color: #f8f9fa; /* Set a light background color */
+        }
+
+        .header {
+            background-color: #343a40; /* Set header background color */
+            color: #ffffff; /* Set text color */
+            padding: 15px;
+        }
+
+        .main-content {
+            margin-top: 20px;
+        }
+
+        .content-section {
+            background-color: #5A6240; /* Set content background color */
+            padding: 8px;
+            margin-bottom: 5px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            line-height: 15px;
+            text-align: center;
+        }
+
+        .content-section-Filedetails {
+            background-color: #CED2AA; /* Set content background color */
+            padding: 5px;
+            border-radius: 4px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-section {
+            background-color: #CED2AA; /* Set form background color */
+            padding: 5px;
+            border-radius: 4px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .header .btn-group {
+            margin-left: 160px;
+        }
+
+        .header .btn-group {
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .header .btn-group button {
+            margin-left: 10px;
+            background-color: white;
+            padding: 8px 12px;
+            border: 2px solid #A08C3B;
+            border-radius: 5px;
+        }
+        .download-data {
+            height:100 px;
+            margin-top: 7px;
+            background-color: #B5BB7B; /* Set content background color */
+            padding: 8px;
+            margin-bottom: 5px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            line-height: 15px;
+        }
+        .show-analysis {
+            height:100 px;
+            margin-top: 7px;
+            background-color: #6D9781; /* Set content background color */
+            padding: 8px;
+            margin-bottom: 5px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            line-height: 15px;
+        }
+         .custom-image{
+            width: 420px;
+            height: 350px;
+            border: 3px solid #333;
+            margin: 10px;
+            border-radius: 10px;
+       }
+
+    </style>
+
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <!-- Empty column to push buttons to the right -->
+                </div>
+                <div class="col text-right">
+                    <div class="btn-group">
+                        <button class="btn btn-light" onclick="redirectToMainc2()">Home</button>
+                        <button class="btn btn-light" onclick="redirectToAnalysis()">Analysis</button>
+                        <button class="btn btn-light" onclick="redirectToContact()">Contacts</button>
+                        <button class="btn btn-light" onclick="redirectToHelp()">Help</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <h2>Showing Analysed Output: </h2>
+    {% for image_name in image_names %}
+     <img src="{{ url_for('static', filename='plots/' + image_name) }}" alt="Error: Analysis Plot failed" class="custom-image">
+    {% endfor %}
+<script>
+        function redirectToMainc2() {
+            window.location.href = "/homepage";
+        }
+        function redirectToContact() {
+        window.location.href = "/contact_details";
+    }
+    function redirectToAnalysis() {
+        window.location.href = "/analysis_page";
+    }
+    function redirectToHelp() {
+        window.location.href = "/help_page";
+    }
+    </script>
+
+</body>
+</html>
