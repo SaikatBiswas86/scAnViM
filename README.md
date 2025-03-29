@@ -1,6 +1,6 @@
 scAnViM: A Web-Based Platform for Improving Efficiency in Single Cell Gene Expression Analysis and Visualization through Machine Learning.
 
-Overview:
+## Overview:
 ScanVim is a Flask-based application designed for clustering and visualizing gene expression data using machine learning techniques. It provides interactive clustering using K-Means, DBSCAN, and Hierarchical Clustering while leveraging TSNE for visualization. The tool helps researchers analyze patterns in high-dimensional biological data efficiently.
 
 Features:
@@ -11,7 +11,7 @@ Features:
 - Allows exporting clustering results.
 - Generates and saves clustering visualization plots.
 
-Installation:
+## Installation:
 #Prerequisites:
 Ensure you have Python 3.x installed on your system. Install the required dependencies using:
 Setup
@@ -25,7 +25,7 @@ Setup
 6. Access the Web App
          ==> On terminal click the web link
 
-Steps to Use scAnViM :
+## Steps to Use scAnViM :
 1. Upload your gene expression dataset (CSV format).
 2. Choose any option like preprocessing, unsupervised, supervised method according to users need.
 3. Select any clustering method (K-Means, DBSCAN, or Hierarchical Clustering) in unsupervised steps or any supervised algorithm in supervised part.
@@ -50,6 +50,10 @@ ScanVim/
 - Clustering visualizations
 - Performance metrics
 - Processed dataset
+
+## Speciality:
+The platform provides a comprehensive suite of features, including data preprocessing, feature selection, dimensionality reduction, clustering, classification, and real-time parameter tuning, all within an intuitive and easy-to-navigate interface. With an open-source design, scAnViM allows users to perform complex data analysis with minimal effort, enhancing the accessibility, reliability, and effectiveness
+of single-cell gene expression research. Additionally, the system integrates machine learning techniques for both supervised and unsupervised learning, facilitating the efficient analysis of labeled and unlabeled data.
 
 ## Contributing
 Contributions are welcome! Feel free to fork the repository and submit pull requests.
