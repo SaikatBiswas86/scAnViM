@@ -15,22 +15,22 @@ Installation:
 #Prerequisites:
 Ensure you have Python 3.x installed on your system. Install the required dependencies using:
 Setup
-1️. Clone the github Repository
-2️⃣. Create a Virtual Environment (Optional but Recommended)
-3️. Install Dependencies
+1. Clone the github Repository
+2. Create a Virtual Environment (Optional but Recommended)
+3. Install Dependencies
          ==> pip install -r requirements.txt  
-4️. Configure Necessary Files (If Required)
-5️. Run the python Application
+4. Configure Necessary Files (If Required)
+5. Run the python Application
          ==> python app.py / manually click run app.py 
-6️. Access the Web App
+6. Access the Web App
          ==> On terminal click the web link
 
 Steps to Use scAnViM :
 1. Upload your gene expression dataset (CSV format).
 2. Choose any option like preprocessing, unsupervised, supervised method according to users need.
-2. Select any clustering method (K-Means, DBSCAN, or Hierarchical Clustering) in unsupervised steps.
-3. Adjust the clustering parameters as needed.
-4. Run any process/algorithms and visualize the results.
+3. Select any clustering method (K-Means, DBSCAN, or Hierarchical Clustering) in unsupervised steps or any supervised algorithm in supervised part.
+4. Adjust the clustering parameters as needed.
+5. Run any process/algorithms and visualize the results.
 
 Folder Structure:
 
@@ -39,11 +39,12 @@ ScanVim/
 ├── static/
 ├── templates/
 ├── data/
+├── uploads/
 ├── models/
 ├── requirements.txt
 ├── README.md
 ├── ...
-```
+
 
 ## Example Output
 - Clustering visualizations
