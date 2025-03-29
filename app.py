@@ -1905,6 +1905,7 @@ def generate_pdf(task_serial):
 
     # Create the PDF object, using the BytesIO buffer as its "file"
     pdf = canvas.Canvas(buffer, pagesize=letter)
+    #okay
 
     # Set up the PDF
     pdf.setTitle(f"Analysis figure Report - Task {task_serial}")
