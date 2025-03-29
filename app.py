@@ -1108,8 +1108,9 @@ def perform_tsne_tasks(df, task_serial_counter, tasks_done, file_name):
     plt.title('TSNE Plot')
 
     tasks_done.append('TSNE_Applied')
-    task_serial = task_serial_counter
+
     task_serial_counter += 1
+    task_serial = task_serial_counter
 
     # Save the plot as a PNG image
     tsne_plot_path = os.path.join(app.config['PLOT_FOLDER'], f'TSNE_plot_{task_serial}.png')
@@ -1239,7 +1240,8 @@ def postprocessed_work():
                                    label=f'cluster {cluster}')
 
                     # Display silhouette score and Davies-Bouldin index on the plot
-                    ax.text(0.5, -0.1, f'Silhouette Score: {silhouette_avg:.2f}\nDavies-Bouldin Index: {db_index:.2f}',
+                    total_clusters = len(set(y_pred)) - (1 if -1 in y_pred else 0)  # Exclude noise (-1)
+                    ax.text(0.5, -0.1, f'Silhouette Score: {silhouette_avg:.2f}\nDavies-Bouldin Index: {db_index:.2f}\nTotal Clusters: {total_clusters}',
                             horizontalalignment='center', verticalalignment='center', transform=ax.transAxes,
                             bbox=dict(facecolor='white', edgecolor='black', boxstyle='round,pad=0.5', alpha=0.8))
 
@@ -1251,6 +1253,8 @@ def postprocessed_work():
                     # Use FigureCanvasAgg to render the figure
                     canvas = FigureCanvas(fig)
                     canvas.print_png(dbscan_plot_path)
+
+
                     plt.close(fig)
 
                     tasks_done.append(f"DB-scan clustering for eps{eps} and min sample {min_samples} :")
@@ -1286,6 +1290,14 @@ def postprocessed_work():
                         top_features = df.drop('cluster', axis=1).columns[np.argsort(feature_importances)[::-1]][:20]
                         representative_df = representative_df[top_features]
 
+
+                        top_features_5 = df.drop('cluster', axis=1).columns[np.argsort(feature_importances)[::-1]][:5]
+                        representative_df_5 = representative_df[top_features_5]
+                        
+                        # Reshape data for box plot
+                        melted_df = pd.melt(df, id_vars=['cluster'], value_vars=top_features_5, var_name='Gene', value_name='Expression')
+
+
                     # Create a heatmap
                     plt.figure(figsize=(16, 12))
                     sns.heatmap(representative_df, cmap='coolwarm', cbar_kws={'label': 'Gene Expression'})
@@ -1299,6 +1311,20 @@ def postprocessed_work():
                     plt.savefig(heatmap_path)
                     plt.close()
 
+                    # Create a Boxplot
+                    plt.figure(figsize=(16, 12))
+                    sns.boxplot(x='Gene', y='Expression', hue='cluster', data=melted_df, palette='Set3')
+                    # Add labels and title
+                    plt.xlabel('Genes')
+                    plt.ylabel('Expression Levels')
+                    plt.title('Box Plot of Gene Expression Across Clusters')
+                    plt.legend(title='Cluster')
+                    # Rotate x-axis labels for better readability
+                    plt.xticks(rotation=90)
+                    boxplot_path = os.path.join(app.config['PLOT_FOLDER'], f'{user_id}_Box_plot_Clusters_specific_{task_serial}.png')
+                    plt.savefig(boxplot_path)
+                    plt.close()
+
                     # Calculate correlation matrix
                     corr_matrix = representative_df.corr()
                     # Plot correlation heatmap
@@ -1309,8 +1335,7 @@ def postprocessed_work():
                     plt.ylabel('Features')
                     plt.title('Correlation Heatmap of Top 20 Features')
                     # Save the correlation heatmap
-                    corr_heatmap_path = os.path.join(app.config['PLOT_FOLDER'],
-                                                     f'{user_id}_Correlation_Heatmap_Top20_{task_serial}.png')
+                    corr_heatmap_path = os.path.join(app.config['PLOT_FOLDER'], f'{user_id}_Correlation_Heatmap_Top20_{task_serial}.png')
                     plt.savefig(corr_heatmap_path)
                     plt.close()
 
@@ -1537,7 +1562,8 @@ def postprocessed_work():
                            label=f'Cluster {cluster}')
 
             # Display silhouette score and Davies-Bouldin index on the plot
-            ax.text(0.5, -0.1, f'Silhouette Score: {silhouette_avg:.2f}\nDavies-Bouldin Index: {db_index:.2f}',
+            total_clusters = len(set(y_pred)) - (1 if -1 in y_pred else 0)  # Exclude noise (-1)
+            ax.text(0.5, -0.1, f'Silhouette Score: {silhouette_avg:.2f}\nDavies-Bouldin Index: {db_index:.2f}\nTotal Clusters: {total_clusters}',
                     horizontalalignment='center', verticalalignment='center', transform=ax.transAxes,
                     bbox=dict(facecolor='white', edgecolor='black', boxstyle='round,pad=0.5', alpha=0.8))
 
@@ -1667,29 +1693,112 @@ def postprocessed_work():
 
 
 
+
     elif 'tsne' in options:
-        tsne_thread = Thread(target=perform_tsne_tasks, args=(df.copy(), task_serial_counter, tasks_done, file_name))
-        tsne_thread.start()
-        tsne_thread.join()
-        task_serial_counter += 0
+
+        # Initialize task serial counter from session
+        session['task_serial_counter'] = session.get('task_serial_counter', 0)
+        task_serial_counter = session['task_serial_counter']
+        tasks_done = []
+        # Perform TSNE tasks directly
+        import matplotlib
+        matplotlib.use('Agg')  # Set backend for non-interactive environments
+        from sklearn.manifold import TSNE
+        import matplotlib.pyplot as plt
+        import os
+        df.fillna(0, inplace=True)
+        tsne = TSNE(n_components=2, random_state=42)
+        tsne_result = tsne.fit_transform(df)
+        # Plotting TSNE results
+        plt.scatter(tsne_result[:, 0], tsne_result[:, 1])
+        plt.title('TSNE Plot')
+        # Increment the task serial counter
+        task_serial_counter += 1
+        session['task_serial_counter'] = task_serial_counter  # Update session
+
+        # Save the plot as a PNG image
+        tsne_plot_path = os.path.join(app.config['PLOT_FOLDER'], f'{user_id}_TSNE visualization_{task_serial}.png')
+        plt.savefig(tsne_plot_path)
+        plt.close()
+        # Save updated DataFrame
+        updated_file_path = os.path.join(app.config['DATA_FOLDER'], f'updated_dataset_{user_id}_{task_serial_counter}.csv')
+        df.to_csv(updated_file_path, index=False)
+        # Update tasks and pass them to the template
+        tasks_done.append('TSNE_Applied')
 
         return render_template('prepocessed_file1_gene.html', file_name=file_name, task_serial=task_serial_counter, tasks=tasks_done)
+
 
 
     elif 'pca' in options:
-        pca_thread = Thread(target=perform_pca_tasks, args=(df.copy(), task_serial_counter, tasks_done, file_name))
-        pca_thread.start()
-        pca_thread.join()
-        task_serial_counter += 0
+        session['task_serial_counter'] = session.get('task_serial_counter', 0)
+        task_serial_counter = session['task_serial_counter']
+        tasks_done = []
+        # Perform PCA tasks directly
+        import matplotlib
+        matplotlib.use('Agg')  # Set backend for non-interactive environments
+        from sklearn.decomposition import PCA
+        import matplotlib.pyplot as plt
+        import os
+        df.fillna(0, inplace=True)
+        pca = PCA(n_components=2)
+        pca_result = pca.fit_transform(df)
+        # Plotting PCA results
+        plt.scatter(pca_result[:, 0], pca_result[:, 1])
+        plt.title('PCA Plot')
+        # Increment the task serial counter
+        task_serial_counter += 1
+        session['task_serial_counter'] = task_serial_counter  # Update session
+
+        # Save the plot as a PNG image
+        pca_plot_path = os.path.join(app.config['PLOT_FOLDER'], f'{user_id}_PCA_visualization_{task_serial_counter}.png')
+        plt.savefig(pca_plot_path)
+        plt.close()
+        # Save updated DataFrame
+        updated_file_path = os.path.join(app.config['DATA_FOLDER'], f'updated_dataset_{user_id}_{task_serial_counter}.csv')
+        df.to_csv(updated_file_path, index=False)
+        # Update tasks and pass them to the template
+        tasks_done.append('PCA plotting Applied')
+
         return render_template('prepocessed_file1_gene.html', file_name=file_name, task_serial=task_serial_counter, tasks=tasks_done)
 
 
+
+
     elif 'dendogram' in options:
-        dendogram_thread = Thread(target=perform_dendogram_tasks, args=(df.copy(), task_serial_counter, tasks_done, file_name))
-        dendogram_thread.start()
-        dendogram_thread.join()
-        task_serial_counter += 0
-        return render_template('prepocessed_file1_gene.html', file_name=file_name, task_serial=task_serial_counter,tasks=tasks_done)
+        session['task_serial_counter'] = session.get('task_serial_counter', 0)
+        task_serial_counter = session['task_serial_counter']
+        tasks_done = []
+        # Perform Dendrogram tasks directly
+        import matplotlib
+        matplotlib.use('Agg')  # Set backend for non-interactive environments
+        from sklearn.preprocessing import StandardScaler
+        from scipy.cluster import hierarchy
+        import matplotlib.pyplot as plt
+        import os
+        df.fillna(0, inplace=True)
+        scaler = StandardScaler()
+        scaled_gene_data = scaler.fit_transform(df)
+        # Generate linkage matrix
+        linkage_matrix = hierarchy.linkage(scaled_gene_data, method='ward')
+        task_serial_counter += 1
+        session['task_serial_counter'] = task_serial_counter  # Update session
+        # Save the dendrogram plot as a PNG image
+        dendrogram_plot_path = os.path.join(app.config['PLOT_FOLDER'], f'{user_id}_dendrogram_plot_{task_serial_counter}.png')
+        plt.figure(figsize=(10, 6))
+        hierarchy.dendrogram(linkage_matrix)
+        plt.title('Dendrogram Plot')
+        plt.xlabel('Samples')
+        plt.ylabel('Distance')
+        plt.savefig(dendrogram_plot_path)
+        plt.close()
+
+        # Save updated DataFrame
+        updated_file_path = os.path.join(app.config['DATA_FOLDER'], f'updated_dataset_{user_id}_{task_serial_counter}.csv')
+        df.to_csv(updated_file_path, index=False)
+        # Update tasks and pass them to the template
+        tasks_done.append('Dendrogram Plotting Applied')
+        return render_template('prepocessed_file1_gene.html', file_name=file_name, task_serial=task_serial_counter, tasks=tasks_done)
 
 
     else:
